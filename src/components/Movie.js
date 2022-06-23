@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
-
+import DeleteMovieModal from './DeleteMovieModal';
 import axios from 'axios';
+import ReactModal from 'react-modal'
 
 const Movie = (props) => {
-    const { addToFavorites } = props;
+    const { addToFavorites, deleteMovie } = props;
 
     const [movie, setMovie] = useState('');
+    const [modalOpen, setModalOpen] = useState(false)
+    
 
     const { id } = useParams();
     const { push } = useHistory();
@@ -19,17 +22,23 @@ const Movie = (props) => {
             .catch(err=>{
                 console.log(err.response);
             })
-    }, [id]);
+    }, []);
+   
 
-    const handleDeleteClick = () =>{
-        props.deleteMovie(id)
+    const openModalClick = () => {
+        setModalOpen(true)
     }
 
+  
     const handleFavoriteClick = () => {
        addToFavorites(movie)
     }
 
+
     return(<div className="modal-page col">
+        <ReactModal isOpen={modalOpen} ariaHideApp={false}> 
+            <DeleteMovieModal  setModalOpen={setModalOpen} deleteMovie={deleteMovie} id={id}/>
+        </ReactModal>
         <div className="modal-dialog">
             <div className="modal-content">
                 <div className="modal-header">						
@@ -60,7 +69,7 @@ const Movie = (props) => {
                         <section>
                             <span onClick={handleFavoriteClick} className="m-2 btn btn-dark">Favorite</span>
                             <Link to={`/movies/edit/${movie.id}`} className="m-2 btn btn-success">Edit</Link>
-                            <span onClick={handleDeleteClick} className="delete">
+                            <span onClick={openModalClick} className="delete">
                                 <input type="button" className="m-2 btn btn-danger" value="Delete"/>
                             </span>
                         </section>

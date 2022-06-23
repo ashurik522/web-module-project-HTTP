@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import DeleteMovieModal from "./components/DeleteMovieModal";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import MovieList from './components/MovieList';
 import Movie from './components/Movie';
@@ -29,14 +29,18 @@ const App = (props) => {
     axios.delete(`http://localhost:9000/api/movies/${id}`)
             .then(res => {
                 setMovies(res.data)
-                push("/movies")
+                push('/movies')
             })
             .catch(err => console.log(err))
   }
 
   const addToFavorites = (movie) => {
-    setFavoriteMovies([...favoriteMovies, movie])
-    push("/movies")
+    const favoriteId = favoriteMovies.find(elem=>{return elem.id === movie.id})
+
+    favoriteId ? 
+      alert('Already Added!') :
+      setFavoriteMovies([...favoriteMovies, movie])
+      push("/movies")
   }
 
   return (
