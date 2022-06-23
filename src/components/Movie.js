@@ -26,7 +26,7 @@ const Movie = (props) => {
     }
 
     const handleFavoriteClick = () => {
-        props.addToFavorites(movie)
+       addToFavorites(movie)
     }
 
     return(<div className="modal-page col">
