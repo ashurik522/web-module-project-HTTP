@@ -48,8 +48,9 @@ const App = (props) => {
             }}>
             </Route>
 
-            <Route path="/movies/:id">
-              <Movie/>
+            <Route path="/movies/:id" render={(props)=>{
+              return   <Movie {...props} setMovies={setMovies} />
+            }}>
             </Route>
 
             <Route path="/movies">
